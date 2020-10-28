@@ -55,6 +55,8 @@ namespace UnityEngine.Experimental.Rendering.Universal
                     returnStats.totalVolumetricUsage++;
 
                 returnStats.blendStylesUsed |= (uint)(1 << light.blendStyleIndex);
+                if (light.lightType != Light2D.LightType.Global)
+                    returnStats.blendStylesWithLights |= (uint)(1 << light.blendStyleIndex);
             }
 
             return returnStats;

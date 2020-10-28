@@ -374,17 +374,12 @@ namespace UnityEngine.Experimental.Rendering.Universal
                 if (!Light2DManager.GetGlobalColor(layerToRender, i, out var clearColor))
                     clearColor = Color.black;
 
-                bool anyLights = (layerBatch.lightStats.blendStylesWithLights & (uint)(1 << i)) != 0;
-                RenderTargetIdentifier identifier;
-                if (anyLights)
-                    identifier = layerBatch.GetRTId(cmd, rtDesc, i);
-                else
-                {
-                    // No lights -- create tiny texture
-                    var desc = rtDesc;
+                var anyLights = (layerBatch.lightStats.blendStylesWithLights & (uint)(1 << i)) != 0;
+
+                var desc = rtDesc;
+                if (!anyLights) // No lights -- create tiny texture
                     desc.width = desc.height = 4;
-                    identifier = layerBatch.GetRTId(cmd, desc, i);
-                }
+                var identifier = layerBatch.GetRTId(cmd, desc, i);
 
                 cmd.SetRenderTarget(identifier,
                     RenderBufferLoadAction.DontCare,
